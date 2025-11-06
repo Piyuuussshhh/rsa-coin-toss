@@ -18,11 +18,14 @@ if not conn:
     sys.exit()
 print("Would you like to connect to the server (Alice) (y/n): ")
 n = input()
+if n == "n":
+    sys.exit()
 
 print("Connection established! Would you like to start the game? (y/n): ")
 n = input()
 if n == "y":
     print("Great! Requested Alice for heads and tails packets!")
+
 
 print("============================================= Game Start (Bob) =============================================")
 

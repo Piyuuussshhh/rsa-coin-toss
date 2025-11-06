@@ -15,17 +15,17 @@ if not server_ip:
 
 print("Would you like to connect to the server (Alice) (y/n): ")
 n = input()
+if n == "n":
+    sys.exit()
+print("Connection established! Would you like to start the game? (y/n): ")
+n = input()
+if n == "n":
+    sys.exit()
+if n == "y":
+    print("Great! Requested Alice for heads and tails packets!")
 conn = network.connect_to_server(server_ip)
 if not conn:
     sys.exit()
-if n == "n":
-    sys.exit()
-
-print("Connection established! Would you like to start the game? (y/n): ")
-n = input()
-if n == "y":
-    print("Great! Requested Alice for heads and tails packets!")
-
 
 print("============================================= Game Start (Bob) =============================================")
 
@@ -40,24 +40,33 @@ with conn:
     c_tails = int(c_tails_str)
     print(f"[NETWORK]\t\tReceived encrypted packets from Alice: \t{c_heads}\t\t{c_tails}")
 
+    print("[GAME]\t\tPress enter to continue...")
+    n = input()
+
     # Pick one packet randomly.
-    print("[GAME]\t\tPick a packet (1/2): ")
+    print("[GAME]\t\tPress enter to toss the coin: ")
     n = int(input())
     packets = [c_heads, c_tails]
-    picked_packet = packets[n - 1]
-    print(f"[GAME]\t\tUser picked the packet {picked_packet}")
+    picked_packet = random.choice(packets)
+    print(f"[GAME]\t\tCoin toss result: {picked_packet}")
+
+    print("[GAME]\t\tPress enter to continue...")
+    n = input()
 
     # User makes prediction.
     prediction = ""
     while prediction not in ["heads", "tails"]:
         prediction = input("[USER INPUT]\t\tBob's prediction (heads/tails): ").lower().strip()
 
+    print("[GAME]\t\tPress enter to continue...")
+    n = input()
+
     print("[ENCRYPTION]\t\tEncrypting the randomly picked packet Bob's public key.")
     doubly_encrypted_packet = rsa.encrypt(picked_packet, eB, n)
 
     payload = f"{doubly_encrypted_packet}:{prediction}"
-    print(f"[NETWORK]\t\tSending doubly-encrypted packet and prediction to Alice.")
     network.send_message(conn, payload)
+    print(f"[NETWORK]\t\tSent doubly-encrypted packet and prediction to Alice.")
 
     half_decrypted_str = network.receive_message(conn)
     half_decrypted_packet = int(half_decrypted_str)

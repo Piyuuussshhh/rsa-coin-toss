@@ -15,21 +15,20 @@ broadcast_thread = threading.Thread(
 )
 broadcast_thread.start()
 
-print("============================================= Game Start (Alice) =============================================")
-
-(n, eA, dA) = rsa.generate_alice_keys()
-print(f"[INFO]\t\t\tAlice's Keys: n= {n}, public key =  {eA}, private key = {dA}")
-
-print("\n[ENCRYPTION]\t\tEncrypting 'heads' and 'tails' with Alice's public key.")
-c_heads = rsa.encrypt(MSG_HEADS, eA, n)
-c_tails = rsa.encrypt(MSG_TAILS, eA, n)
-print(f"[INFO]\t\t\tEncrypted HEADS = {c_heads}")
-print(f"[INFO]\t\t\tEncrypted TAILS = {c_tails}")
-alice_copy = {c_heads: MSG_HEADS, c_tails: MSG_TAILS}
 
 conn, server_socket = network.create_server()
 
 with conn:
+    print("============================================= Game Start (Alice) =============================================")
+    (n, eA, dA) = rsa.generate_alice_keys()
+    print(f"[INFO]\t\t\tAlice's Keys: n= {n}, public key =  {eA}, private key = {dA}")
+    print("\n[ENCRYPTION]\t\tEncrypting 'heads' and 'tails' with Alice's public key.")
+    c_heads = rsa.encrypt(MSG_HEADS, eA, n)
+    c_tails = rsa.encrypt(MSG_TAILS, eA, n)
+    print(f"[INFO]\t\t\tEncrypted HEADS = {c_heads}")
+    print(f"[INFO]\t\t\tEncrypted TAILS = {c_tails}")
+    alice_copy = {c_heads: MSG_HEADS, c_tails: MSG_TAILS}
+
     packet_payload = f"{c_heads}:{c_tails}"
     network.send_message(conn, packet_payload)
 

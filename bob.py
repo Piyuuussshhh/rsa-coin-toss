@@ -13,11 +13,11 @@ if not server_ip:
     print("[NETWORK]\t\tCould not find Alice on the network. Exiting.")
     sys.exit()
 
+print("Would you like to connect to the server (Alice) (y/n): ")
+n = input()
 conn = network.connect_to_server(server_ip)
 if not conn:
     sys.exit()
-print("Would you like to connect to the server (Alice) (y/n): ")
-n = input()
 if n == "n":
     sys.exit()
 

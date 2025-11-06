@@ -14,14 +14,14 @@ if not server_ip:
     sys.exit()
 
 print("Would you like to connect to the server (Alice) (y/n): ")
-n = input()
-if n == "n":
+p = input()
+if p == "n":
     sys.exit()
 print("Connection established! Would you like to start the game? (y/n): ")
-n = input()
-if n == "n":
+p = input()
+if p == "n":
     sys.exit()
-if n == "y":
+if p == "y":
     print("Great! Requested Alice for heads and tails packets!")
 conn = network.connect_to_server(server_ip)
 if not conn:
@@ -41,7 +41,7 @@ with conn:
     print(f"[NETWORK]\t\tReceived encrypted packets from Alice: \t{c_heads}\t\t{c_tails}")
 
     print("[GAME]\t\tPress enter to continue...")
-    n = input()
+    p = input()
 
     # Pick one packet randomly.
     print("[GAME]\t\tPress enter to toss the coin: ")
@@ -51,7 +51,7 @@ with conn:
     print(f"[GAME]\t\tCoin toss result: {picked_packet}")
 
     print("[GAME]\t\tPress enter to continue...")
-    n = input()
+    p = input()
 
     # User makes prediction.
     prediction = ""
@@ -59,9 +59,9 @@ with conn:
         prediction = input("[USER INPUT]\t\tBob's prediction (heads/tails): ").lower().strip()
 
     print("[GAME]\t\tPress enter to continue...")
-    n = input()
+    p = input()
 
-    print("[ENCRYPTION]\t\tEncrypting the randomly picked packet Bob's public key.")
+    print("[ENCRYPTION]\t\tEncrypting the randomly picked packet using Bob's public key.")
     doubly_encrypted_packet = rsa.encrypt(picked_packet, eB, n)
 
     payload = f"{doubly_encrypted_packet}:{prediction}"

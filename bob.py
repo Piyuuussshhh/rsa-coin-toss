@@ -45,7 +45,7 @@ with conn:
 
     # Pick one packet randomly.
     print("[GAME]\t\tPress enter to toss the coin: ")
-    n = int(input())
+    n = input()
     packets = [c_heads, c_tails]
     picked_packet = random.choice(packets)
     print(f"[GAME]\t\tCoin toss result: {picked_packet}")
